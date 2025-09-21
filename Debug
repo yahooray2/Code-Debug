@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab Companion App</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  
+</head>
+<body>
+  <div class="app-container">
+    <button class="theme-toggle" id="themeToggle">
+      <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- LOGIN PAGE -->
+    <div class="login-screen" id="login-page">
+      <div class="login-card">
+        <h2>Lab Companion</h2>
+        <input type="text" id="username" placeholder="Username" value="demo">
+        <input type="password" id="password" placeholder="Password" value="password">
+        <select id="role">
+          <option value="student">Student</option>
+          <option value="instructor">Instructor</option>
+          <option value="assistant">Lab Assistant</option>
+        </select>
+        <button class="btn" onclick="login()">Login</button>
+      </div>
+    </div>
+
+    <!-- STUDENT VIEW -->
+    <div class="hidden" id="student-view">
+      <!-- Side Navigation -->
+      <div class="side-nav">
+        <div class="nav-header">
+          <div class="avatar">S</div>
+          <h3>Juan Dela Cruz</h3>
+        </div>
+        <a href="#" class="nav-item active" data-page="student-dashboard">
+          <i class="fas fa-home"></i> Home
+        </a>
+        <a href="#" class="nav-item" data-page="student-schedule">
+          <i class="fas fa-calendar"></i> Schedule
+        </a>
+        <a href="#" class="nav-item" data-page="student-reports">
+          <i class="fas fa-file-alt"></i> Reports
+        </a>
+        <a href="#" class="nav-item" onclick="logout()" style="margin-top: auto;">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Student Dashboard -->
+        <div id="student-dashboard">
+          <div class="content-header">
+            <h1>Student Dashboard</h1>
+            <span>Monday, March 18, 2024</span>
+          </div>
+
+          <div class="welcome-section">
+            <div class="welcome-avatar">J</div>
+            <div>
+              <h2>Hello, Juan</h2>
+              <p>1.5</p>
+            </div>
+          </div>
+
+          <div class="card-grid">
+            <div class="card">
+              <h3><i class="fas fa-calendar-alt"></i> Current Lab Session</h3>
+              <div class="schedule-item current">
+                <p><strong>Networking Lab</strong></p>
+                <p>Room: B-203</p>
+                <p>Time: 2:00 PM - 4:00 PM</p>
+              </div>
+              <button class="btn" onclick="navigateTo('student-lab-guide')"><i class="fas fa-book"></i> View Lab Guide</button>
+            </div>
+
+            <div class="card">
+              <h3><i class="fas fa-tasks"></i> Quick Actions</h3>
+              <button class="btn" style="background: var(--danger);" onclick="navigateTo('student-report-issue')">
+                <i class="fas fa-exclamation-triangle"></i> Report PC Issue
+              </button>
+              <button class="btn" onclick="navigateTo('student-submit-report')">
+                <i class="fas fa-file-upload"></i> Submit Lab Report
+              </button>
+              <button class="btn" style="background: var(--warning);">
+                <i class="fas fa-clock"></i> Request Time Extension
+              </button>
+            </div>
+
+            <div class="card">
+              <h3><i class="fas fa-list"></i> Upcoming Labs</h3>
+              <div class="schedule-item upcoming">
+                <p><strong>Database Lab</strong></p>
+                <p>Room: A-101</p>
+                <p>Time: Tomorrow, 10:00 AM</p>
+              </div>
+              <div class="schedule-item">
+                <p><strong>Security Lab</strong></p>
+                <p>Room: C-305</p>
+                <p>Time: Friday, 1:00 PM</p>
+              </div>
+              <button class="btn" onclick="navigateTo('student-schedule')">
+                <i class="fas fa-calendar-plus"></i> View Full Schedule
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Student Schedule Page -->
+        <div id="student-schedule" class="hidden">
+          <div class="content-header">
+            <h1>Lab Schedule</h1>
+            <button class="btn" style="width: auto;" onclick="navigateTo('student-dashboard')">
+              <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </button>
+          </div>
+
+          <div class="card">
+            <h3><i class="fas fa-calendar"></i> March 2024</h3>
+            <table class="calendar">
+              <thead>
+                <tr>
+                  <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td></td><td></td><td></td><td></td><td></td><td>1</td><td>2</td>
+                </tr>
+                <tr>
+                  <td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td>
+                </tr>
+                <tr>
+                  <td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td>
+                </tr>
+                <tr>
+                  <td>17</td><td class="today">18<span class="calendar-event">Networking Lab</span></td><td>19</td><td>20<span class="calendar-event">Database Lab</span></td><td>21</td><td>22<span class="calendar-event">Security Lab</span></td><td>23</td>
+                </tr>
+                <tr>
+                  <td>24</td><td>25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td>
+                </tr>
+                <tr>
+                  <td>31</td><td></td><td></td><td></td><td></td><td></td><td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card mt-20">
+            <h3><i class="fas fa-list-ol"></i> Upcoming Labs</h3>
+            <div class="schedule-item current">
+              <p><strong>Networking Lab</strong></p>
+              <p>Room: B-203 | Today, 2:00 PM - 4:00 PM</p>
+            </div>
+            <div class="schedule-item upcoming">
+              <p><strong>Database Lab</strong></p>
+              <p>Room: A-101 | March 20, 10:00 AM - 12:00 PM</p>
+            </div>
+            <div class="schedule-item">
+              <p><strong>Security Lab</strong></p>
+              <p>Room: C-305 | March 22, 1:00 PM - 3:00 PM</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Student Reports Page -->
+        <div id="student-reports" class="hidden">
+          <div class="content-header">
+            <h1>Lab Reports</h1>
+            <button class="btn" style="width: auto;" onclick="navigateTo('student-dashboard')">
+              <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </button>
+          </div>
+
+          <div class="card-grid">
+            <div class="card">
+              <h3><i class="fas fa-file-import"></i> Submit New Report</h3>
+              <p>Submit your completed lab report for grading.</p>
+              <button class="btn" onclick="navigateTo('student-submit-report')">
+                <i class="fas fa-upload"></i> Submit Report
+              </button>
+            </div>
+
+            <div class="card">
+              <h3><i class="fas fa-history"></i> Recent Submissions</h3>
+              <div class="schedule-item">
+                <p><strong>Networking Lab 3</strong></p>
+                <p>Submitted: March 15, 2024</p>
+                <p>Status: Graded (88%)</p>
+              </div>
+              <div class="schedule-item">
+                <p><strong>Database Lab 2</strong></p>
+                <p>Submitted: March 8, 2024</p>
+                <p>Status: Graded (92%)</p>
+              </div>
+              <button class="btn" style="background: var(--warning);">
+                <i class="fas fa-download"></i> Download All
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Student Lab Guide Page -->
+        <div id="student-lab-guide" class="hidden">
+          <div class="content-header">
+            <h1>Networking Lab Guide</h1>
+            <button class="btn" style="width: auto;" onclick="navigateTo('student-dashboard')">
+              <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </button>
+          </div>
+
+          <div class="card">
+            <h3><i class="fas fa-info-circle"></i> Lab Overview</h3>
+            <p><strong>Objective:</strong> Configure a small network with routing and security protocols</p>
+            <p><strong>Duration:</strong> 2 hours</p>
+            <p><strong>Materials:</strong> Router, Switch, 4 PCs, Ethernet cables</p>
+          </div>
+
+          <div class="card mt-20">
+            <h3><i class="fas fa-list-ol"></i> Step-by-Step Instructions</h3>
+            <ol style="padding-left: 20px; margin: 15px 0;">
+              <li>Connect the hardware as shown in the diagram</li>
+              <li>Configure the router with the following settings: ...</li>
+              <li>Set up the switch with VLAN configurations</li>
+              <li>Configure IP addresses on all PCs</li>
+              <li>Test connectivity between all devices</li>
+              <li>Implement security protocols</li>
+              <li>Run diagnostic tests</li>
+              <li>Document your configuration</li>
+            </ol>
+          </div>
+
+          <div class="card mt-20">
+            <h3><i class="fas fa-exclamation-triangle"></i> Safety Instructions</h3>
+            <ul style="padding-left: 20px; margin: 15px 0;">
+              <li>Ensure all power is off before connecting devices</li>
+              <li>Handle equipment with care</li>
+              <li>Do not disconnect devices during operation</li>
+              <li>Report any malfunctioning equipment immediately</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Student Report Issue Page -->
+        <div id="student-report-issue" class="hidden">
+          <div class="content-header">
+            <h1>Report PC Issue</h1>
+            <button class="btn" style="width: auto;" onclick="navigateTo('student-dashboard')">
+              <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </button>
+          </div>
+
+          <div class="card">
+            <h3><i class="fas fa-bug"></i> Report a Problem</h3>
+            <div class="form-group">
+              <label for="pc-number">PC Number</label>
+              <select id="pc-number">
+                <option value="">Select PC Number</option>
+                <option value="pc-01">PC-01</option>
+                <option value="pc-02">PC-02</option>
+                <option value="pc-03">PC-03</option>
+                <option value="pc-04">PC-04</option>
+                <option value="pc-05">PC-05</option>
+                <option value="pc-06">PC-06</option>
+                <option value="pc-07">PC-07</option>
+                <option value="pc-08">PC-08</option>
+                <option value="pc-09">PC-09</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="issue-type">Issue Type</label>
+              <select id="issue-type">
+                <option value="">Select Issue Type</option>
+                <option value="hardware">Hardware Problem</option>
+                <option value="software">Software Problem</option>
+                <option value="network">Network Issue</option>
+                <option value="peripheral">Peripheral Issue</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="issue-description">Issue Description</label>
+              <textarea id="issue-description" placeholder="Please describe the issue in detail..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="issue-urgency">Urgency</label>
+              <select id="issue-urgency">
+                <option value="low">Low - Can wait</option>
+                <option value="medium">Medium - Affects work</option>
+                <option value="high">High - Cannot proceed</option>
+              </select>
+            </div>
+
+            <button class="btn"><i class="fas fa-paper-plane"></i> Submit Report</button>
+          </div>
+        </div>
+
+        <!-- Student Submit Report Page -->
+        <div id="student-submit-report" class="hidden">
+          <div class="content-header">
+            <h1>Submit Lab Report</h1>
+            <button class="btn" style="width: auto;" onclick="navigateTo('student-dashboard')">
+              <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </button>
+          </div>
+
+          <div class="card">
+            <h3><i class="fas fa-file-upload"></i> Submit Your Report</h3>
+            <div class="form-group">
+              <label for="lab-select">Select Lab</label>
+              <select id="lab-select">
+                <option value="">Select Lab</option>
+                <option value="networking-3">Networking Lab 3</option>
+                <option value="database-2">Database Lab 2</option>
+                <option value="security-1">Security Lab 1</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="report-file">Report File (PDF or DOCX)</label>
+              <input type="file" id="report-file" accept=".pdf,.docx">
+            </div>
+
+            <div class="form-group">
+              <label for="additional-notes">Additional Notes (Optional)</label>
+              <textarea id="additional-notes" placeholder="Any additional information for the instructor..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>
+                <input type="checkbox" id="confirmation">
+                I confirm that this is my own work and complies with academic integrity policies.
+              </label>
+            </div>
+
+            <button class="btn"><i class="fas fa-check-circle"></i> Submit Report</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INSTRUCTOR VIEW -->
+    <div class="hidden" id="instructor-view">
+      <!-- Side Navigation -->
+      <div class="side-nav">
+        <div class="nav-header">
+          <div class="avatar">P</div>
+          <h3>Prof. Juan Dela Cruz</h3>
+        </div>
+        <a href="#" class="nav-item active" data-page="instructor-dashboard">
+          <i class="fas fa-home"></i> Overview
+        </a>
+        <a href="#" class="nav-item" data-page="instructor-schedule">
+          <i class="fas fa-calendar"></i> Schedule
+        </a>
+        <a href="#" class="nav-item" data-page="instructor-grading">
+          <i class="fas fa-check-circle"></i> Grading
+        </a>
+        <a href="#" class="nav-item" data-page="instructor-analytics">
+          <i class="fas fa-chart-bar"></i> Analytics
+        </a>
+        <a href="#" class="nav-item" onclick="logout()" style="margin-top: auto;">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Instructor Dashboard -->
+        <div id="instructor-dashboard">
+          <div class="content-header">
+            <h1>Instructor Dashboard</h1>
+            <span>Monday, March 18, 2024</span>
+          </div>
+
+          <div class="welcome-section">
+            <div class="welcome-avatar">P</div>
+            <div>
+              <h2>Hello, Professor Johnson</h2>
+              <p>Computer Science Department</p>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <p>Active Labs</p>
+              <h4>3</h4>
+            </div>
+            <div class="stat-card">
+              <p>Reports to Grade</p>
+              <h4>24</h4>
+            </div>
+            <div class="stat-card">
+              <p>Students Online</p>
+              <h4>42</h4>
+            </div>
+            <div class="stat-card">
+              <p>Issues Reported</p>
+              <h4>5</h4>
+            </div>
+          </div>
+
+          <div class="card-grid">
+            <div class="card">
+              <h3><i class="fas fa-chart-line"></i> Performance Analytics</h3>
+              <p>Most flagged PC: B203-04 (8 reports)</p>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 70%"></div>
+              </div>
+              <p>Avg. completion time: 87 minutes</p>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 65%"></div>
+              </div>
+              <button class="btn"><i class="fas fa-chart-bar"></i> View Detailed Analytics</button>
+            </div>
+
+            <div class="card">
+              <h3><i class="fas fa-flask"></i> Active Lab Sessions</h3>
+              <ul class="issue-list">
+                <li>Networking Lab - B203 <span class="badge badge-high">25 students</span></li>
+                <li>Programming Lab - C305 <span class="badge badge-medium">18 students</span></li>
+                <li>Database Lab - A101 <span class="badge badge-low">12 students</span></li>
+              </ul>
+              <button class="btn"><i class="fas fa-eye"></i> View All Sessions</button>
+            </div>
+
+            <div class="card">
+              <h3><i class="fas fa-cog"></i> Management Tools</h3>
+              <button class="btn"><i class="fas fa-plus-circle"></i> Schedule New Lab</button>
+              <button class="btn"><i class="fas fa-check-double"></i> Plagiarism Check</button>
+              <button class="btn"><i class="fas fa-clipboard-list"></i> Generate Reports</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Other instructor pages would go here -->
+        <div id="instructor-schedule" class="hidden">
+          <!-- Instructor schedule content -->
+        </div>
+        <div id="instructor-grading" class="hidden">
+          <!-- Instructor grading content -->
+        </div>
+        <div id="instructor-analytics" class="hidden">
+          <!-- Instructor analytics content -->
+        </div>
+      </div>
+    </div>
+
+    <!-- LAB ASSISTANT VIEW -->
+    <div class="hidden" id="assistant-view">
+      <!-- Side Navigation -->
+      <div class="side-nav">
+        <div class="nav-header">
+          <div class="avatar">A</div>
+          <h3>Lab Assistant</h3>
+        </div>
+        <a href="#" class="nav-item active" data-page="assistant-dashboard">
+          <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a href="#" class="nav-item" data-page="assistant-inventory">
+          <i class="fas fa-box"></i> Inventory
+        </a>
+        <a href="#" class="nav-item" data-page="assistant-incidents">
+          <i class="fas fa-exclamation-circle"></i> Incidents
+        </a>
+        <a href="#" class="nav-item" data-page="assistant-settings">
+          <i class="fas fa-cog"></i> Settings
+        </a>
+        <a href="#" class="nav-item" onclick="logout()" style="margin-top: auto;">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Lab Assistant Dashboard -->
+        <div id="assistant-dashboard">
+          <div class="content-header">
+            <h1>Lab Assistant Dashboard</h1>
+            <span>Monday, March 18, 2024</span>
+          </div>
+
+          <div class="welcome-section">
+            <div class="welcome-avatar">A</div>
+            <div>
+              <h2>Hello, Lab Assistant</h2>
+              <p>Computer Lab B-203</p>
+            </div>
+          </div>
+
+          <div class="tab-bar">
+            <div class="tab active" onclick="switchTab('pc-status')">PC Status</div>
+            <div class="tab" onclick="switchTab('reported-issues')">Reported Issues</div>
+            <div class="tab" onclick="switchTab('inventory-status')">Inventory Status</div>
+          </div>
+
+          <div id="pc-status-tab">
+            <div class="card">
+              <h3><i class="fas fa-desktop"></i> Lab B-203 PC Status</h3>
+              <div class="pc-status-grid">
+                <div class="pc-status good">PC-01 ✅</div>
+                <div class="pc-status warning">PC-02 ⚠️</div>
+                <div class="pc-status good">PC-03 ✅</div>
+                <div class="pc-status bad">PC-04 ❌</div>
+                <div class="pc-status good">PC-05 ✅</div>
+                <div class="pc-status good">PC-06 ✅</div>
+                <div class="pc-status good">PC-07 ✅</div>
+                <div class="pc-status warning">PC-08 ⚠️</div>
+                <div class="pc-status good">PC-09 ✅</div>
+              </div>
+              <button class="btn"><i class="fas fa-search"></i> Detailed View</button>
+            </div>
+
+            <div class="card mt-20">
+              <h3><i class="fas fa-tools"></i> Quick Actions</h3>
+              <button class="btn"><i class="fas fa-plus-circle"></i> Add New PC</button>
+              <button class="btn" style="background: var(--warning);"><i class="fas fa-sync-alt"></i> Update Status</button>
+              <button class="btn" style="background: var(--danger);"><i class="fas fa-trash"></i> Decommission PC</button>
+            </div>
+          </div>
+
+          <div id="reported-issues-tab" class="hidden">
+            <div class="card">
+              <h3><i class="fas fa-exclamation-circle"></i> Reported Issues</h3>
+              <ul class="issue-list">
+                <li>PC-04: No Power <span class="badge badge-high">High</span></li>
+                <li>PC-02: Slow Performance <span class="badge badge-medium">Medium</span></li>
+                <li>PC-08: Mouse Not Working <span class="badge badge-low">Low</span></li>
+                <li>PC-11: Monitor Flickering <span class="badge badge-medium">Medium</span></li>
+                <li>PC-15: Keyboard Missing <span class="badge badge-low">Low</span></li>
+              </ul>
+              <button class="btn"><i class="fas fa-plus"></i> Log New Issue</button>
+            </div>
+
+            <div class="card mt-20">
+              <h3><i class="fas fa-chart-pie"></i> Issues Overview</h3>
+              <div class="stats-grid">
+                <div class="stat-card">
+                  <p>Total Issues</p>
+                  <h4>15</h4>
+                </div>
+                <div class="stat-card">
+                  <p>Resolved</p>
+                  <h4>9</h4>
+                </div>
+                <div class="stat-card">
+                  <p>In Progress</p>
+                  <h4>3</h4>
+                </div>
+                <div class="stat-card">
+                  <p>Pending</p>
+                  <h4>3</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="inventory-status-tab" class="hidden">
+            <div class="card">
+              <h3><i class="fas fa-boxes"></i> Inventory Status</h3>
+              <div class="inventory-grid">
+                <div class="inventory-item">
+                  <h4>Software Licenses</h4>
+                  <p>28/30</p>
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 93%"></div>
+                  </div>
+                </div>
+                <div class="inventory-item">
+                  <h4>Peripherals</h4>
+                  <p>45/50</p>
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 90%"></div>
+                  </div>
+                </div>
+                <div class="inventory-item">
+                  <h4>PCs Operational</h4>
+                  <p>24/25</p>
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 96%"></div>
+                  </div>
+                </div>
+                <div class="inventory-item">
+                  <h4>Network Ports</h4>
+                  <p>38/40</p>
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 95%"></div>
+                  </div>
+                </div>
+              </div>
+              <button class="btn"><i class="fas fa-clipboard-check"></i> Check Inventory</button>
+            </div>
+
+            <div class="card mt-20">
+              <h3><i class="fas fa-shopping-cart"></i> Reorder Needs</h3>
+              <ul class="issue-list">
+                <li>Ethernet Cables <span class="badge badge-medium">10 needed</span></li>
+                <li>Mouse Devices <span class="badge badge-low">5 needed</span></li>
+                <li>Windows Licenses <span class="badge badge-high">2 needed</span></li>
+                <li>HDMI Cables <span class="badge badge-low">3 needed</span></li>
+              </ul>
+              <button class="btn"><i class="fas fa-file-invoice"></i> Generate Order</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Other assistant pages would go here -->
+        <div id="assistant-inventory" class="hidden">
+          <!-- Assistant inventory content -->
+        </div>
+        <div id="assistant-incidents" class="hidden">
+          <!-- Assistant incidents content -->
+        </div>
+        <div id="assistant-settings" class="hidden">
+          <!-- Assistant settings content -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab Companion App</title>
+  <style>
+    /* ===== Your styles (simplified for sample) ===== */
+    body { font-family: Arial, sans-serif; margin:0; background:#f4f4f4; }
+    .hidden { display:none; }
+    .btn { padding:8px 14px; border:none; border-radius:5px; background:#007bff; color:#fff; cursor:pointer; margin-top:8px; }
+    .btn i { margin-right:6px; }
+    .card { background:#fff; padding:15px; margin:10px 0; border-radius:6px; }
+    .main-content { padding:20px; }
+
+    /* ===== MODAL styles ===== */
+    .modal {
+      position: fixed; top:0; left:0; width:100%; height:100%;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(0,0,0,0.6); z-index:1000;
+    }
+    .modal.hidden { display:none; }
+    .modal-content {
+      background:#fff; padding:20px; border-radius:10px;
+      max-width:800px; width:90%; max-height:90%; overflow-y:auto;
+      animation:popup 0.3s ease;
+    }
+    @keyframes popup {
+      from { transform:scale(0.9); opacity:0; }
+      to { transform:scale(1); opacity:1; }
+    }
+    .close-btn {
+      float:right; font-size:24px; font-weight:bold; cursor:pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- STUDENT VIEW (sample only) -->
+    <div id="student-view">
+      <div class="main-content">
+        <!-- Dashboard -->
+        <div id="student-dashboard">
+          <h1>Student Dashboard</h1>
+          <div class="card">
+            <h3>Current Lab Session</h3>
+            <p>Networking Lab – Room B203</p>
+            <!-- OPEN as popup -->
+            <button class="btn" onclick="openPopup('student-lab-guide')">
+              <i class="fas fa-book"></i> View Lab Guide
+            </button>
+          </div>
+
+          <div class="card">
+            <h3>Quick Actions</h3>
+            <button class="btn" onclick="openPopup('student-report-issue')">
+              <i class="fas fa-exclamation-triangle"></i> Report PC Issue
+            </button>
+            <button class="btn" onclick="openPopup('student-submit-report')">
+              <i class="fas fa-file-upload"></i> Submit Lab Report
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden contents (for popup use only) -->
+    <div id="student-lab-guide" class="hidden">
+      <h2>Networking Lab Guide</h2>
+      <p><strong>Objective:</strong> Configure a small network with routing...</p>
+      <ul>
+        <li>Step 1: Connect hardware</li>
+        <li>Step 2: Configure router</li>
+        <li>Step 3: Setup VLANs</li>
+      </ul>
+    </div>
+
+    <div id="student-report-issue" class="hidden">
+      <h2>Report PC Issue</h2>
+      <label>PC Number: <input type="text"></label><br><br>
+      <textarea placeholder="Describe the issue..."></textarea><br>
+      <button class="btn">Submit</button>
+    </div>
+
+    <div id="student-submit-report" class="hidden">
+      <h2>Submit Lab Report</h2>
+      <label>Select Lab:
+        <select>
+          <option>Networking Lab</option>
+          <option>Database Lab</option>
+        </select>
+      </label><br><br>
+      <input type="file"><br><br>
+      <button class="btn">Upload</button>
+    </div>
+  </div>
+
+  <!-- POPUP MODAL -->
+  <div id="popupModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closePopup()">&times;</span>
+      <div id="popup-body"></div>
+    </div>
+  </div>
+
+  <script>
+    // Open popup and load content
+    function openPopup(contentId) {
+      const content = document.getElementById(contentId);
+      const popupBody = document.getElementById('popup-body');
+      if (content) {
+        popupBody.innerHTML = content.innerHTML; // clone hidden content
+        document.getElementById('popupModal').classList.remove('hidden');
+      }
+    }
+
+    // Close popup
+    function closePopup() {
+      document.getElementById('popupModal').classList.add('hidden');
+      document.getElementById('popup-body').innerHTML = "";
+    }
+  </script>
+
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+      if (document.body.classList.contains('light-mode')) {
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+      } else {
+        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+      }
+    });
+
+    // Login Function
+    function login() {
+      const role = document.getElementById('role').value;
+      
+      // Hide login page
+      document.getElementById('login-page').classList.add('hidden');
+      
+      // Show appropriate dashboard based on role
+      if (role === "student") {
+        document.getElementById('student-view').classList.remove('hidden');
+        setActiveNav('student-dashboard');
+      } else if (role === "instructor") {
+        document.getElementById('instructor-view').classList.remove('hidden');
+        setActiveNav('instructor-dashboard');
+      } else {
+        document.getElementById('assistant-view').classList.remove('hidden');
+        setActiveNav('assistant-dashboard');
+      }
+    }
+
+    // Logout Function
+    function logout() {
+      // Hide all dashboards
+      document.querySelectorAll('[id$="-view"]').forEach(view => {
+        view.classList.add('hidden');
+      });
+      
+      // Show login page
+      document.getElementById('login-page').classList.remove('hidden');
+    }
+
+    // Navigation Functions
+    function setActiveNav(pageId) {
+      // Hide all pages
+      document.querySelectorAll('.main-content > div').forEach(page => {
+        page.classList.add('hidden');
+      });
+      
+      // Show selected page
+      document.getElementById(pageId).classList.remove('hidden');
+      
+      // Set active nav item
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+        if (item.getAttribute('data-page') === pageId) {
+          item.classList.add('active');
+        }
+      });
+    }
+
+    // Navigate to specific page
+    function navigateTo(pageId) {
+      setActiveNav(pageId);
+    }
+
+    // Tab switching for lab assistant
+    function switchTab(tabName) {
+      // Hide all tabs
+      document.getElementById('pc-status-tab').classList.add('hidden');
+      document.getElementById('reported-issues-tab').classList.add('hidden');
+      document.getElementById('inventory-status-tab').classList.add('hidden');
+      
+      // Show selected tab
+      document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+      
+      // Update active tab
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      event.target.classList.add('active');
+    }
+
+    // Add event listeners to nav items
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+        item.addEventListener('click', function() {
+          setActiveNav(this.getAttribute('data-page'));
+        });
+      });
+    });
+  </script>
+</body>
+</html>
